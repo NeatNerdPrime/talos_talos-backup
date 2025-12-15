@@ -54,6 +54,15 @@ Talos backup will compress the etcd snapshot with zstd algorithm before encrypt 
 
 The easiest way to set retention is to set the lifecycle policy on the storage bucket itself.
 
+#### S3 backend specific notes
+
+* Backblaze:
+  * In the list of buckets, click on "Lifecycle Settings" next to your bucket that stores the Talos backups.
+  * Select "Use custom lifecycle rules".
+  * Leave the "File Path" box empty.
+  * In the "Days Till Hide", put the number of days - 1 of your desired retention, then 1 on "Days Till Delete".
+  * Click on "Update Bucket"
+
 ## Development
 
 You may build the binary with:
