@@ -1,3 +1,12 @@
+---
+apiVersion: talos.dev/v1alpha1
+kind: ServiceAccount
+metadata:
+  name: talos-backup-secrets
+spec:
+  roles:
+    - os:etcd:backup
+---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
@@ -54,29 +63,16 @@ spec:
               volumeMounts:
                 - mountPath: /tmp
                   name: tmp
+                - mountPath: /.talos
+                  name: talos
                 - mountPath: /var/run/secrets/talos.dev
                   name: talos-secrets
           restartPolicy: OnFailure
           volumes:
             - emptyDir: {}
               name: tmp
+            - emptyDir: {}
+              name: talos
             - name: talos-secrets
               secret:
                 secretName: talos-backup-secrets
----
-apiVersion: talos.dev/v1alpha1
-kind: ServiceAccount
-metadata:
-  name: talos-backup-secrets
-spec:
-  roles:
-    - os:etcd:backup
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: talos-backup-secrets
-  annotations:
-    kubernetes.io/service-account.name: talos-backup-secrets
----
-
