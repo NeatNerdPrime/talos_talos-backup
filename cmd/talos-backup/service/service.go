@@ -46,7 +46,7 @@ func BackupSnapshot(ctx context.Context, serviceConfig *config.ServiceConfig, ta
 	}
 
 	if !disableEncryption {
-		encryptedFileName, encryptionErr := encryption.EncryptFile(snapshotPath, serviceConfig.AgeX25519PublicKey)
+		encryptedFileName, encryptionErr := encryption.EncryptFile(snapshotPath, serviceConfig.AgeRecipientPublicKey)
 		if encryptionErr != nil {
 			return fmt.Errorf("failed to encrypt etcd snapshot: %w", encryptionErr)
 		}
