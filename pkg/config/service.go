@@ -11,12 +11,13 @@ import (
 
 // ServiceConfig holds configuration values for the etcd snapshot service.
 // The parameters CustomS3Endpoint, s3Prefix, clusterName are optional.
-type ServiceConfig struct {
+type ServiceConfig struct { //nolint:govet
 	CustomS3Endpoint      string   `yaml:"customS3Endpoint"`
 	Bucket                string   `yaml:"bucket"`
 	Region                string   `yaml:"region"`
 	S3Prefix              string   `yaml:"s3Prefix"`
 	ClusterName           string   `yaml:"clusterName"`
+	UsePathStyle          bool     `yaml:"usePathStyle"`
 	AgeRecipientPublicKey []string `yaml:"ageRecipientPublicKey"`
 	EnableCompression     bool     `yaml:"enableCompression"`
 	DisableEncryption     bool     `yaml:"disableEncryption"`
@@ -28,6 +29,7 @@ const (
 	regionEnvVar                = "AWS_REGION"
 	s3PrefixEnvVar              = "S3_PREFIX"
 	clusterNameEnvVar           = "CLUSTER_NAME"
+	usePathStyleEnvVar          = "USE_PATH_STYLE"
 	enableCompressionEnvVar     = "ENABLE_COMPRESSION"
 	disableEncryptionEnvVar     = "DISABLE_ENCRYPTION"
 	ageRecipientPublicKeyEnvVar = "AGE_RECIPIENT_PUBLIC_KEY"
@@ -46,8 +48,9 @@ func GetServiceConfig() *ServiceConfig {
 		Region:                os.Getenv(regionEnvVar),
 		S3Prefix:              os.Getenv(s3PrefixEnvVar),
 		ClusterName:           os.Getenv(clusterNameEnvVar),
-		EnableCompression:     os.Getenv(enableCompressionEnvVar) == "true",
-		DisableEncryption:     os.Getenv(disableEncryptionEnvVar) == "true",
+		UsePathStyle:          os.Getenv(usePathStyleEnvVar) == "true",      //nolint:goconst
+		EnableCompression:     os.Getenv(enableCompressionEnvVar) == "true", //nolint:goconst
+		DisableEncryption:     os.Getenv(disableEncryptionEnvVar) == "true", //nolint:goconst
 		AgeRecipientPublicKey: ageRecipientPublicKey,
 	}
 }
